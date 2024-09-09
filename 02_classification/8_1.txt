@@ -1,0 +1,218 @@
+Note: To answer both questions I did a few experiment and test runs. Results output can be found at the bottom of this file. I did 11 experiments, and for each experiment I did 10 runs, calculating the accuracy of each run by comparing the prediction results with the test targets. For each experiment I also calculated the average accuracy and standard deviation. The output for these experiments can be found at the bottom of this file.
+
+-------------------------------------------------------------------------------------
+(Question A) Compare the accuracy of both datasets, if the results are different, what explains the difference?
+-------------------------------------------------------------------------------------
+Answer to A):
+
+Comparing the datasets described in section 1 and 8, i.e.:
+
+Dataset 1) Dataset with n=50, locs=[-1,1], scales=[sqrt(5), sqrt(5)] 
+Dataset 2) Dataset with n=50, locs=[-4,4], scales=[sqrt(2), sqrt(2)]
+
+Dataset 1) shows a wide range of accuracies for the 10 runs. The average accuracy was 68.95% and a standard deviation of 11.40%. Indicating variability in performance, where the model sometimes performs well (highest accuracy being 89.47%) and sometimes not so well (lowest of the 10 runs being 47.37% accurate).
+
+Dataset 2) Gave 100% accuracy for all 10 runs, with a standard deviation of 0.00%, meaning the model's performance gave the same result (100%) every time.
+
+The differences in accuracy between Dataset 1) and Dataset 2) can be explained by two factors: 
+The separation of the means and the spread of the data (standard deviation). Dataset 2) both has greater mean separation and less spread, which makes classification easier since the classes are more distinct. However Dataset 1) has more overlap between the classes, since the means are closer and it also has a larger spread.
+
+-------------------------------------------------------------------------------------
+(Question B) What happens when you change the:
+
+number of datapoints
+mean of the normal distributions
+standard deviation of the normal distributions
+Explain in a few words how and why each of these affect the accuracy of your model.
+-------------------------------------------------------------------------------------
+Answer to B)
+
+What happened when I changed the number of datapoints?
+
+When I decreased the number of datapoints to 10, the accuracy dropped and variability increased significantly, with a standard deviation of 36.67%. Increasing the number of datapoints to 100 stabilized the accuracy, which was close to what it was for 50 datapoints, but with reduced variability (Std = 5.71%). This indicates that with more data the model's performance becomes more stable.
+
+What happened when I changed the mean of the normal distributions?
+
+Changing the mean of the normal distributions had a clear impact on the accuracy of the model. Closer means gave lower accuracy and higher variability, while far-apart means resulted in 100% accuracy with no variability.
+
+
+What happened when I changed the standard deviation of the normal distributions?
+
+When I changed the standard deviation, increasing it to sqrt(4) resulted in slightly decreased accuracy and it added some variability (98.95%, Std = 2.11%), while decreasing it to sqrt(1) maintained 100% accuracy with no variability. Using different standard deviations for each class also resulted in 100% accuracy with no variability.
+
+
+-------------------------------------------------------------------------------------
+Outputs for the experiments:
+
+--------------
+Starter datasets
+Experiment 1: Dataset with n=50, locs=[-1,1], scales=[sqrt(5), sqrt(5)]
+Accuracy results per run:
+  Run 1: 57.89%
+  Run 2: 89.47%
+  Run 3: 73.68%
+  Run 4: 73.68%
+  Run 5: 47.37%
+  Run 6: 68.42%
+  Run 7: 78.95%
+  Run 8: 68.42%
+  Run 9: 57.89%
+  Run 10: 73.68%
+Average accuracy: 68.95%
+Std of the accuracy: 11.40%
+
+Experiment 2: Dataset with n=50, locs=[-4,4], scales=[sqrt(2), sqrt(2)]
+Accuracy results per run:
+  Run 1: 100.00%
+  Run 2: 100.00%
+  Run 3: 100.00%
+  Run 4: 100.00%
+  Run 5: 100.00%
+  Run 6: 100.00%
+  Run 7: 100.00%
+  Run 8: 100.00%
+  Run 9: 100.00%
+  Run 10: 100.00%
+Average accuracy: 100.00%
+Std of the accuracy: 0.00%
+
+--------------
+Change the number of datapoints
+Experiment 3: Smaller dataset with n=10, locs=[-1,1], scales=[sqrt(5), sqrt(5)]
+Accuracy results per run:
+  Run 1: 66.67%
+  Run 2: 100.00%
+  Run 3: 0.00%
+  Run 4: 66.67%
+  Run 5: 0.00%
+  Run 6: 100.00%
+  Run 7: 66.67%
+  Run 8: 33.33%
+  Run 9: 100.00%
+  Run 10: 33.33%
+Average accuracy: 56.67%
+Std of the accuracy: 36.67%
+
+Experiment 4: Larger dataset with n=100, locs=[-1,1], scales=[sqrt(5), sqrt(5)]
+Accuracy results per run:
+  Run 1: 64.10%
+  Run 2: 64.10%
+  Run 3: 74.36%
+  Run 4: 58.97%
+  Run 5: 69.23%
+  Run 6: 66.67%
+  Run 7: 79.49%
+  Run 8: 61.54%
+  Run 9: 66.67%
+  Run 10: 66.67%
+Average accuracy: 67.18%
+Std of the accuracy: 5.71%
+
+--------------
+Change the mean
+Experiment 5: Close means, n=50, locs=[-0.5, 0.5], scales=[sqrt(2), sqrt(2)]
+Accuracy results per run:
+  Run 1: 68.42%
+  Run 2: 52.63%
+  Run 3: 36.84%
+  Run 4: 73.68%
+  Run 5: 63.16%
+  Run 6: 63.16%
+  Run 7: 63.16%
+  Run 8: 68.42%
+  Run 9: 63.16%
+  Run 10: 68.42%
+Average accuracy: 62.11%
+Std of the accuracy: 9.93%
+
+Experiment 6: Extremely close means, n=50, locs=[0, 0.5], scales=[sqrt(2), sqrt(2)]
+Accuracy results per run:
+  Run 1: 73.68%
+  Run 2: 68.42%
+  Run 3: 52.63%
+  Run 4: 57.89%
+  Run 5: 57.89%
+  Run 6: 57.89%
+  Run 7: 42.11%
+  Run 8: 47.37%
+  Run 9: 57.89%
+  Run 10: 36.84%
+Average accuracy: 55.26%
+Std of the accuracy: 10.59%
+
+Experiment 7: Same means, n=50, locs=[0, 0], scales=[sqrt(2), sqrt(2)]
+Accuracy results per run:
+  Run 1: 52.63%
+  Run 2: 36.84%
+  Run 3: 31.58%
+  Run 4: 52.63%
+  Run 5: 42.11%
+  Run 6: 36.84%
+  Run 7: 36.84%
+  Run 8: 42.11%
+  Run 9: 52.63%
+  Run 10: 47.37%
+Average accuracy: 43.16%
+Std of the accuracy: 7.37%
+
+Experiment 8: Far apart means, n=50, locs=[-10, 10], scales=[sqrt(2), sqrt(2)]
+Accuracy results per run:
+  Run 1: 100.00%
+  Run 2: 100.00%
+  Run 3: 100.00%
+  Run 4: 100.00%
+  Run 5: 100.00%
+  Run 6: 100.00%
+  Run 7: 100.00%
+  Run 8: 100.00%
+  Run 9: 100.00%
+  Run 10: 100.00%
+Average accuracy: 100.00%
+Std of the accuracy: 0.00%
+
+--------------
+Change the std
+Experiment 9: Increase std dev, n=50, locs=[-4, 4], scales=[sqrt(4), sqrt(4)]
+Accuracy results per run:
+  Run 1: 100.00%
+  Run 2: 100.00%
+  Run 3: 100.00%
+  Run 4: 100.00%
+  Run 5: 100.00%
+  Run 6: 94.74%
+  Run 7: 100.00%
+  Run 8: 100.00%
+  Run 9: 100.00%
+  Run 10: 94.74%
+Average accuracy: 98.95%
+Std of the accuracy: 2.11%
+
+Experiment 10: Decrease std dev, n=50, locs=[-4, 4], scales=[sqrt(1), sqrt(1)]
+Accuracy results per run:
+  Run 1: 100.00%
+  Run 2: 100.00%
+  Run 3: 100.00%
+  Run 4: 100.00%
+  Run 5: 100.00%
+  Run 6: 100.00%
+  Run 7: 100.00%
+  Run 8: 100.00%
+  Run 9: 100.00%
+  Run 10: 100.00%
+Average accuracy: 100.00%
+Std of the accuracy: 0.00%
+
+Experiment 11: Different std dev, n=50, locs=[-4, 4], scales=[sqrt(1), sqrt(3)]
+Accuracy results per run:
+  Run 1: 100.00%
+  Run 2: 100.00%
+  Run 3: 100.00%
+  Run 4: 100.00%
+  Run 5: 100.00%
+  Run 6: 100.00%
+  Run 7: 100.00%
+  Run 8: 100.00%
+  Run 9: 100.00%
+  Run 10: 100.00%
+Average accuracy: 100.00%
+Std of the accuracy: 0.00%
