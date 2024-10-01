@@ -43,23 +43,21 @@ def mvn_basis(
     
     # Loop over each basis function mean vector
     for k in range(M):
-        # Detach, move to CPU, and convert mean, covariance matrix, and features 
-        # to NumPy to be able to use multivariate_normal
-        mean_np = mu[k].detach().cpu().numpy()
-        covariance_matrix_np = covariance_matrix.detach().cpu().numpy()
-        features_np = features.detach().cpu().numpy()
+        # Create a multivariate normal distribution for each mean vector
+        multivariate = multivariate_normal(mean=mu[k].numpy(), cov=covariance_matrix)
 
-        # Create the multivariate 
-        multivariate = multivariate_normal(mean_np,covariance_matrix_np)
-                
-        # Compute and store the pdf values in the output matrix
-        output_matrix[:, k] = torch.tensor(multivariate.pdf(features_np))
-    
+        # Compute the basis function values for all N data points
+        output_matrix[:, k] = torch.tensor(multivariate.pdf(features.numpy()))                             
+                            
     return output_matrix
 
 
-def _plot_mvn():
-    pass
+def _plot_mvn(
+        fi: torch.Tensor,
+        M: float):
+    for i in range(M):
+        x_axis = fi[:, 0].numpy()
+        plt.plot(x_axis, fi[:, i].numpy(), label=f'Basis Function {i+1}')
 
 
 def max_likelihood_linreg(

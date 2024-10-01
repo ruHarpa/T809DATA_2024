@@ -24,3 +24,5 @@ if __name__ == "__main__":
     fi = mvn_basis(X, mu, var)
 
     print(fi)
+
+    _plot_mvn(fi,M)
