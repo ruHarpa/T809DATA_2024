@@ -41,11 +41,7 @@ def perceptron(x: torch.Tensor, w: torch.Tensor) -> Union[torch.Tensor, torch.Te
 
 
 def ffnn(
-    x: torch.Tensor,
-    M: int,
-    K: int,
-    W1: torch.Tensor,
-    W2: torch.Tensor,
+    x: torch.Tensor, M: int, K: int, W1: torch.Tensor, W2: torch.Tensor
 ) -> Union[torch.Tensor, torch.Tensor, torch.Tensor, torch.Tensor, torch.Tensor]:
     """
     Computes the output and hidden layer variables for a
@@ -87,7 +83,7 @@ def backprop(
     # 3: Calculate delta_j
     delta_j_full = torch.matmul(delta_k, W2.T)
     # Remove the bias term
-    delta_j = delta_j_full[:, 1:] * d_sigmoid(a1) 
+    delta_j = delta_j_full[:, 1:] * d_sigmoid(a1)
 
     # 4: Initialize dE1 and dE2 as zero-matrices with the same shape as W1 and W2
     dE1 = torch.zeros_like(W1)
@@ -111,14 +107,63 @@ def train_nn(
     eta: float,
 ) -> Union[torch.Tensor, torch.Tensor, torch.Tensor, torch.Tensor, torch.Tensor]:
     """
-    Train a network by:
-    1. forward propagating an input feature through the network
-    2. Calculate the error between the prediction the network
-    made and the actual target
-    3. Backpropagating the error through the network to adjust
-    the weights.
+    Train the neural network by:
+    1. Forward propagating the input feature through the network.
+    2. Calculating the error between the prediction the network made and the actual target.
+    3. Backpropagating the error through the network to adjust the weights.
     """
-    ...
+
+    # 1: Initialize necessary variables
+    N = X_train.shape[0]
+    Etotal = torch.zeros(iterations)
+    misclassification_rate = torch.zeros(iterations)
+    last_guesses = torch.zeros(N)
+
+    # 2: Run a loop for iterations iterations.
+    for i in range(iterations):
+        # 3: In each iteration we will collect the gradient error matrices for each data point.
+        # 3: Start by initializing dE1_total and dE2_total as zero matrices with the same shape as W1 and W2 respectively.
+        dE1_total = torch.zeros_like(W1)
+        dE2_total = torch.zeros_like(W2)
+        # Initialize total loss, and correct predictions(for the misclassification rate) for this iteration
+        total_loss = 0.0
+        correct_predictions = 0
+
+        # 4: Run a loop over all the data points in X_train.
+        for j, (x, target_y) in enumerate(zip(X_train, t_train)):
+            # 4: In each iteration we call backprop to get the gradient error matrices and the output values.
+            y, dE1, dE2 = backprop(x, target_y, M, K, W1, W2)
+            dE1_total += dE1
+            dE2_total += dE2
+
+            # 6: For the error estimation we'll use the cross-entropy error function, (Eq 5.74 in Bishop (Eq. 4.90 in old Bishop)).
+            loss = -torch.sum(
+                target_y * torch.log(y) + (1 - target_y) * torch.log(1 - y)
+            )
+            total_loss += loss.item()
+
+            # Check for correct prediction and track last guesses
+            predicted_class = torch.argmax(y)
+            actual_class = torch.argmax(target_y)
+            last_guesses[j] = predicted_class
+
+            if predicted_class == actual_class:
+                correct_predictions += 1
+
+        # 5: Once we have collected the error gradient matrices for all the data points,
+        # 5: we adjust the weights in W1 and W2, using W1 = W1 - eta * dE1_total / N
+        # 5: where N is the number of data points in X_train (and similarly for W2).
+        W1 -= eta * dE1_total / N
+        W2 -= eta * dE2_total / N
+
+        # Store total loss
+        Etotal[i] = total_loss / N
+
+        # Calculate misclassification rate
+        misclassification_rate[i] = 1 - (correct_predictions / N)
+
+    # 7: When the outer loop finishes, we return from the function
+    return W1, W2, Etotal, misclassification_rate, last_guesses
 
 
 def test_nn(
@@ -128,7 +173,17 @@ def test_nn(
     Return the predictions made by a network for all features
     in the test set X.
     """
-    ...
+    N = X.shape[0]
+    guesses = torch.zeros(N)
+
+    # Run through all the data points in X_test
+    for i, x in enumerate(X):
+        # Use ffnn to guess the classification for current point
+        y, z0, z1, a1, a2 = ffnn(x, M, K, W1, W2)
+        predicted_class = torch.argmax(y)
+        guesses[i] = predicted_class
+
+    return guesses
 
 
 if __name__ == "__main__":
