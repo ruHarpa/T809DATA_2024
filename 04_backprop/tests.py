@@ -17,16 +17,16 @@ if __name__ == "__main__":
     ...
     # SECTION 1.1 - The Sigmoid function
     # Test the function to confirm that it matches the sample input and outputs
-    print(sigmoid(torch.Tensor([0.5])))
+    #print(sigmoid(torch.Tensor([0.5])))
     # Check for overflow problems
-    print(sigmoid(torch.Tensor([-101])))
+    #print(sigmoid(torch.Tensor([-101])))
     # Test the d_sigmoid to confirm that it matches the sample input and output
-    print(d_sigmoid(torch.Tensor([0.2])))
+    #print(d_sigmoid(torch.Tensor([0.2])))
 
     # SECTION 1.2 - The Perceptron function
     # Test the function to confirm that it matches the sample input and outputs
-    print(perceptron(torch.Tensor([1.0, 2.3, 1.9]), torch.Tensor([0.2, 0.3, 0.1])))
-    print(perceptron(torch.Tensor([0.2, 0.4]), torch.Tensor([0.1, 0.4])))
+    #print(perceptron(torch.Tensor([1.0, 2.3, 1.9]), torch.Tensor([0.2, 0.3, 0.1])))
+    #print(perceptron(torch.Tensor([0.2, 0.4]), torch.Tensor([0.1, 0.4])))
 
     # SECTION 1.3 - Forward Propagation
     # initialize the random generator to get repeatable results
@@ -50,11 +50,11 @@ if __name__ == "__main__":
 
     # Test the function to confirm that it matches the sample input and outputs
     y, z0, z1, a1, a2 = ffnn(x, M, K, W1, W2)
-    print("y=", y)
-    print("z0=", z0)
-    print("z1=", z1)
-    print("a1=", a1)
-    print("a2=", a2)
+    #print("y=", y)
+    #print("z0=", z0)
+    #print("z1=", z1)
+    #print("a1=", a1)
+    #print("a2=", a2)
 
     # SECTION 1.4 - Backwards Propagation
     # initialize random generator to get predictable results
@@ -76,9 +76,9 @@ if __name__ == "__main__":
 
     # Test the function to confirm that it matches the sample input and outputs
     y, dE1, dE2 = backprop(x, target_y, M, K, W1, W2)
-    print("y=", y)
-    print("dE1=", dE1)
-    print("dE2=", dE2)
+    #print("y=", y)
+    #print("dE1=", dE1)
+    #print("dE2=", dE2)
 
     # SECTOIN 2.1 - train_nn and
     # initialize the random seed to get predictable results
@@ -95,11 +95,12 @@ if __name__ == "__main__":
     W1tr, W2tr, Etotal, misclassification_rate, last_guesses = train_nn(
         train_features[:20, :], train_targets[:20], M, K, W1, W2, 500, 0.1
     )
-    print("W1tr=", W1tr)
-    print("W2tr=", W2tr)
-    print("misclassification_rate=", misclassification_rate)
-    print("last_guesses=", last_guesses)
+    #print("W1tr=", W1tr)
+    #print("W2tr=", W2tr)
+    #print("misclassification_rate=", misclassification_rate)
+    #print("last_guesses=", last_guesses)
 
+    
     # SECTION 2.2 and 2.3 - test_nn andTrain the network and test it on the Iris dataset
     # 1. Initialize the random seed to get predictable results
     manual_seed = 1234
@@ -111,7 +112,7 @@ if __name__ == "__main__":
     y = iris.target
 
     # 3. One-hot encode the target labels
-    one_hot_encoder = OneHotEncoder(sparse=False)
+    one_hot_encoder = OneHotEncoder(sparse_output=False)
     y_onehot = one_hot_encoder.fit_transform(
         y.reshape(-1, 1)
     )
@@ -128,9 +129,9 @@ if __name__ == "__main__":
     y_test = torch.tensor(y_test, dtype=torch.float32)
 
     # 5. Define the network parameters
-    M = 6  
-    K = 3  
-    D = X_train.shape[1]  
+    K = 3  # number of classes
+    M = 6
+    D = X_train.shape[1]
     
     # 6. Initialize weights randomly
     W1 = 2 * torch.rand(D + 1, M) - 1  
@@ -161,7 +162,7 @@ if __name__ == "__main__":
     # Plot confusion matrix
     plt.figure(figsize=(8, 6))
     plt.imshow(conf_matrix, interpolation="nearest", cmap=plt.cm.Blues)
-    plt.title("Confusion Matrix for Iris Test Data")
+    #plt.title("Confusion Matrix for Iris Test Data")
     plt.colorbar()
 
     # 12. Plot E_total as a function of iterations
@@ -169,7 +170,7 @@ if __name__ == "__main__":
     plt.plot(E_total.numpy())
     plt.xlabel("Iterations")
     plt.ylabel("E_total (Cross-Entropy Loss)")
-    plt.title("E_total vs Iterations")
+    #plt.title("E_total vs Iterations")
     plt.show()
 
     # 13. Plot misclassification_rate as a function of iterations
@@ -177,7 +178,7 @@ if __name__ == "__main__":
     plt.plot(misclassification_rate.numpy())
     plt.xlabel("Iterations")
     plt.ylabel("Misclassification Rate")
-    plt.title("Misclassification Rate vs Iterations")
+    #plt.title("Misclassification Rate vs Iterations")
     plt.show()
 
     # Print the seed for reproducibility
